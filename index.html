@@ -3,389 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noticias Oficiales 2026</title>
+    <title>InfoOficial - Noticias 2026</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Georgia', serif; background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%); min-height: 100vh; padding-bottom: 80px; }
+        
+        header { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-bottom: 4px solid #d4af37; padding: 30px 20px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        header h1 { color: #d4af37; font-size: 3em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); letter-spacing: 3px; }
+        header p { color: #fff; margin-top: 10px; font-size: 1.1em; }
 
-        body {
-            font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-            min-height: 100vh;
-            padding-bottom: 80px;
-        }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
-        header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            border-bottom: 4px solid #d4af37;
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 30px; }
 
-        header h1 {
-            color: #d4af37;
-            font-size: 3em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            letter-spacing: 3px;
-        }
+        .news-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.15); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 2px solid #d4af37; }
+        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3); }
+        .news-card img { width: 100%; height: 250px; object-fit: cover; border-bottom: 3px solid #d4af37; }
+        .news-content { padding: 20px; }
+        .news-title { color: #1a1a1a; font-size: 1.5em; margin-bottom: 10px; font-weight: bold; }
+        .news-date { color: #d4af37; font-size: 0.9em; margin-bottom: 15px; font-style: italic; }
+        .news-description { color: #555; line-height: 1.6; font-size: 1em; }
 
-        header p {
-            color: #fff;
-            margin-top: 10px;
-            font-size: 1.1em;
-        }
+        .no-news { text-align: center; color: #888; font-size: 1.2em; padding: 60px 20px; grid-column: 1 / -1; }
 
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+        .settings-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); border-radius: 50%; border: none; cursor: pointer; box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .settings-btn:hover { transform: rotate(180deg) scale(1.1); box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6); }
+        .settings-btn svg { width: 35px; height: 35px; fill: #1a1a1a; }
 
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
+        .modal-overlay.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .news-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid #d4af37;
-        }
+        .modal-content { background: white; padding: 40px; border-radius: 15px; max-width: 400px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3); border: 3px solid #d4af37; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-content h2 { color: #1a1a1a; margin-bottom: 20px; text-align: center; font-size: 1.8em; }
+        .modal-content input[type="password"] { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 1em; margin-bottom: 20px; transition: border-color 0.3s ease; }
+        .modal-content input[type="password"]:focus { outline: none; border-color: #d4af37; }
 
-        .news-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
-        }
+        .modal-buttons { display: flex; gap: 10px; }
+        .modal-buttons button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 1em; cursor: pointer; transition: all 0.3s ease; font-weight: bold; }
+        .btn-login { background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
+        .btn-cancel { background: #e0e0e0; color: #333; }
+        .btn-cancel:hover { background: #d0d0d0; }
 
-        .news-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-bottom: 3px solid #d4af37;
-        }
+        .error-message { color: #e74c3c; text-align: center; margin-top: 15px; font-weight: bold; display: none; animation: shake 0.5s ease; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        .error-message.show { display: block; }
 
-        .news-content {
-            padding: 20px;
-        }
+        .admin-panel { display: none; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); border: 3px solid #d4af37; margin-bottom: 40px; }
+        .admin-panel.active { display: block; animation: slideUp 0.3s ease; }
+        .admin-panel h2 { color: #1a1a1a; margin-bottom: 20px; font-size: 2em; border-bottom: 3px solid #d4af37; padding-bottom: 10px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #333; font-weight: bold; font-size: 1.1em; }
+        .form-group input[type="text"], .form-group textarea, .form-group input[type="file"] { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1em; font-family: 'Georgia', serif; transition: border-color 0.3s ease; }
+        .form-group input[type="text"]:focus, .form-group textarea:focus { outline: none; border-color: #d4af37; }
+        .form-group textarea { resize: vertical; min-height: 120px; }
 
-        .news-title {
-            color: #1a1a1a;
-            font-size: 1.5em;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
+        .btn-publish { background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; padding: 15px 40px; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; margin-right: 10px; }
+        .btn-publish:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4); }
+        .btn-logout { background: #e74c3c; color: white; padding: 15px 40px; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+        .btn-logout:hover { background: #c0392b; transform: translateY(-2px); }
+        .btn-delete { background: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 0.9em; transition: all 0.3s ease; }
+        .btn-delete:hover { background: #c0392b; }
 
-        .news-date {
-            color: #d4af37;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-            font-style: italic;
-        }
-
-        .news-description {
-            color: #555;
-            line-height: 1.6;
-            font-size: 1em;
-        }
-
-        .no-news {
-            text-align: center;
-            color: #888;
-            font-size: 1.2em;
-            padding: 60px 20px;
-            grid-column: 1 / -1;
-        }
-
-        /* Botón de configuración (tuerquita) */
-        .settings-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .settings-btn:hover {
-            transform: rotate(180deg) scale(1.1);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
-        }
-
-        .settings-btn svg {
-            width: 35px;
-            height: 35px;
-            fill: #1a1a1a;
-        }
-
-        /* Modal de login */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            border: 3px solid #d4af37;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { 
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to { 
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-content h2 {
-            color: #1a1a1a;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.8em;
-        }
-
-        .modal-content input[type="password"] {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1em;
-            margin-bottom: 20px;
-            transition: border-color 0.3s ease;
-        }
-
-        .modal-content input[type="password"]:focus {
-            outline: none;
-            border-color: #d4af37;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .modal-buttons button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
-
-        .btn-login {
-            background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-            color: #1a1a1a;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-        }
-
-        .btn-cancel {
-            background: #e0e0e0;
-            color: #333;
-        }
-
-        .btn-cancel:hover {
-            background: #d0d0d0;
-        }
-
-        .error-message {
-            color: #e74c3c;
-            text-align: center;
-            margin-top: 15px;
-            font-weight: bold;
-            display: none;
-            animation: shake 0.5s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        /* Panel de administrador */
-        .admin-panel {
-            display: none;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            border: 3px solid #d4af37;
-            margin-bottom: 40px;
-        }
-
-        .admin-panel.active {
-            display: block;
-            animation: slideUp 0.3s ease;
-        }
-
-        .admin-panel h2 {
-            color: #1a1a1a;
-            margin-bottom: 20px;
-            font-size: 2em;
-            border-bottom: 3px solid #d4af37;
-            padding-bottom: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-
-        .form-group input[type="text"],
-        .form-group textarea,
-        .form-group input[type="file"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1em;
-            font-family: 'Georgia', serif;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input[type="text"]:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #d4af37;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .btn-publish {
-            background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-            color: #1a1a1a;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: 10px;
-        }
-
-        .btn-publish:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
-        }
-
-        .btn-logout {
-            background: #e74c3c;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-logout:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        .btn-delete {
-            background: #e74c3c;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 0.9em;
-            transition: all 0.3s ease;
-        }
-
-        .btn-delete:hover {
-            background: #c0392b;
-        }
-
-        footer {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            color: #d4af37;
-            text-align: center;
-            padding: 20px;
-            margin-top: 60px;
-            border-top: 4px solid #d4af37;
-        }
+        footer { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: #d4af37; text-align: center; padding: 20px; margin-top: 60px; border-top: 4px solid #d4af37; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>NOTICIAS OFICIALES 2026</h1>
+    <h1>INFOOFICIAL</h1>
     <p>Tu fuente de información confiable y actualizada</p>
 </header>
 
 <div class="container">
-    <!-- Panel de Administrador -->
     <div id="adminPanel" class="admin-panel">
         <h2>📰 Panel de Publicación</h2>
         <div class="form-group">
@@ -404,20 +96,17 @@
         <button class="btn-logout" onclick="logout()">🚪 Cerrar Sesión</button>
     </div>
 
-    <!-- Feed de Noticias -->
     <div id="newsFeed" class="news-grid">
-        <div class="no-news">No hay noticias publicadas aún</div>
+        <div class="no-news">Cargando noticias oficiales...</div>
     </div>
 </div>
 
-<!-- Botón de Configuración (Tuerquita) -->
 <button class="settings-btn" onclick="showLoginModal()" title="Acceso Administrador">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
     </svg>
 </button>
 
-<!-- Modal de Login -->
 <div id="loginModal" class="modal-overlay">
     <div class="modal-content">
         <h2>🔐 Acceso Restringido</h2>
@@ -431,37 +120,51 @@
 </div>
 
 <footer>
-    <p>&copy; 2026 Noticias Oficiales - Todos los derechos reservados</p>
+    <p>&copy; 2026 InfoOficial - Todos los derechos reservados</p>
 </footer>
 
-<script>
+<!-- SCRIPT DE FIREBASE CONFIGURADO -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // ✅ CONFIGURACIÓN DE FIREBASE (Ya integrada)
+    const firebaseConfig = {
+        apiKey: "AIzaSyBdOGCcK6RO_0dYbwg7lywOgnEuhrn7MRE",
+        authDomain: "infooficial-2026.firebaseapp.com",
+        databaseURL: "https://infooficial-2026-default-rtdb.firebaseio.com",
+        projectId: "infooficial-2026",
+        storageBucket: "infooficial-2026.firebasestorage.app",
+        messagingSenderId: "181245999814",
+        appId: "1:181245999814:web:4df33c217285a971ad75c7",
+        measurementId: "G-EMPO0DQTPR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    
     const ADMIN_PASSWORD = "AdminCodix2026*";
     let isAdmin = false;
 
-    // Cargar noticias al iniciar
-    document.addEventListener('DOMContentLoaded', loadNews);
-
-    function showLoginModal() {
+    window.showLoginModal = function() {
         document.getElementById('loginModal').classList.add('active');
         document.getElementById('adminPassword').value = '';
         document.getElementById('errorMessage').classList.remove('show');
         setTimeout(() => document.getElementById('adminPassword').focus(), 100);
-    }
+    };
 
-    function closeLoginModal() {
+    window.closeLoginModal = function() {
         document.getElementById('loginModal').classList.remove('active');
         document.getElementById('adminPassword').value = '';
         document.getElementById('errorMessage').classList.remove('show');
-    }
+    };
 
-    function checkPassword() {
+    window.checkPassword = function() {
         const inputPassword = document.getElementById('adminPassword').value;
-        
         if (inputPassword === ADMIN_PASSWORD) {
             isAdmin = true;
             closeLoginModal();
             document.getElementById('adminPanel').classList.add('active');
-            loadNews(); // Recargar para mostrar botones de eliminar
             alert('✅ Bienvenido, Administrador');
         } else {
             document.getElementById('errorMessage').classList.add('show');
@@ -470,15 +173,14 @@
                 document.getElementById('errorMessage').classList.remove('show');
             }, 3000);
         }
-    }
+    };
 
-    function logout() {
+    window.logout = function() {
         isAdmin = false;
         document.getElementById('adminPanel').classList.remove('active');
-        loadNews(); // Recargar para ocultar botones de eliminar
-    }
+    };
 
-    function publishNews() {
+    window.publishNews = function() {
         const title = document.getElementById('newsTitle').value.trim();
         const description = document.getElementById('newsDescription').value.trim();
         const imageInput = document.getElementById('newsImage');
@@ -488,57 +190,62 @@
             return;
         }
 
-        const processNews = (imageData) => {
+        const saveToFirebase = (imageData) => {
             const newsItem = {
-                id: Date.now(),
                 title: title,
                 description: description,
                 image: imageData,
                 date: new Date().toLocaleDateString('es-ES', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                })
+                    year: 'numeric', month: 'long', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                }),
+                timestamp: Date.now()
             };
 
-            let newsList = JSON.parse(localStorage.getItem('newsData2026')) || [];
-            newsList.unshift(newsItem);
-
-            try {
-                localStorage.setItem('newsData2026', JSON.stringify(newsList));
-                document.getElementById('newsTitle').value = '';
-                document.getElementById('newsDescription').value = '';
-                document.getElementById('newsImage').value = '';
-                loadNews();
-                alert('✅ Noticia publicada exitosamente');
-            } catch (e) {
-                alert('❌ Error: La imagen es demasiado grande. Intente con una imagen más pequeña.');
-            }
+            push(ref(db, 'noticias'), newsItem)
+                .then(() => {
+                    document.getElementById('newsTitle').value = '';
+                    document.getElementById('newsDescription').value = '';
+                    document.getElementById('newsImage').value = '';
+                    alert('✅ Noticia publicada en tiempo real para todos');
+                })
+                .catch((error) => {
+                    alert('❌ Error al publicar: ' + error.message);
+                });
         };
 
         if (imageInput.files && imageInput.files[0]) {
+            const file = imageInput.files[0];
+            if (file.size > 1500000) { 
+                if (!confirm('⚠️ La imagen es grande y podría llenar la base de datos gratuita. ¿Subir de todos modos?')) {
+                    return;
+                }
+            }
             const reader = new FileReader();
             reader.onload = function(e) {
-                processNews(e.target.result);
+                saveToFirebase(e.target.result);
             };
-            reader.readAsDataURL(imageInput.files[0]);
+            reader.readAsDataURL(file);
         } else {
-            processNews(null);
+            saveToFirebase(null);
         }
-    }
+    };
 
-    function loadNews() {
+    const newsRef = ref(db, 'noticias');
+    onValue(newsRef, (snapshot) => {
         const feed = document.getElementById('newsFeed');
-        const newsList = JSON.parse(localStorage.getItem('newsData2026')) || [];
+        feed.innerHTML = '';
+        const data = snapshot.val();
 
-        if (newsList.length === 0) {
+        if (!data) {
             feed.innerHTML = '<div class="no-news">📭 No hay noticias publicadas aún</div>';
             return;
         }
 
-        feed.innerHTML = '';
+        const newsList = Object.entries(data)
+            .map(([key, value]) => ({ id: key, ...value }))
+            .sort((a, b) => b.timestamp - a.timestamp);
+
         newsList.forEach(news => {
             const card = document.createElement('div');
             card.className = 'news-card';
@@ -550,7 +257,7 @@
 
             let deleteBtn = '';
             if (isAdmin) {
-                deleteBtn = `<button class="btn-delete" onclick="deleteNews(${news.id})">️ Eliminar</button>`;
+                deleteBtn = `<button class="btn-delete" onclick="window.deleteNews('${news.id}')">🗑️ Eliminar</button>`;
             }
 
             card.innerHTML = `
@@ -564,18 +271,19 @@
             `;
             feed.appendChild(card);
         });
-    }
+    });
 
-    function deleteNews(id) {
-        if (!confirm('¿Está seguro de eliminar esta noticia?')) return;
+    window.deleteNews = function(id) {
+        if (!confirm('¿Está seguro de eliminar esta noticia permanentemente?')) return;
+        remove(ref(db, `noticias/${id}`))
+            .then(() => {
+                alert('✅ Noticia eliminada');
+            })
+            .catch((error) => {
+                alert('❌ Error al eliminar: ' + error.message);
+            });
+    };
 
-        let newsList = JSON.parse(localStorage.getItem('newsData2026')) || [];
-        newsList = newsList.filter(news => news.id !== id);
-        localStorage.setItem('newsData2026', JSON.stringify(newsList));
-        loadNews();
-    }
-
-    // Cerrar modal al hacer clic fuera
     document.getElementById('loginModal').addEventListener('click', function(e) {
         if (e.target === this) {
             closeLoginModal();
