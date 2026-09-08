@@ -3,293 +3,1342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InfoOficial - Noticias 2026</title>
+    <meta name="description" content="INFOOFICIAL - Tu fuente confiable de noticias en tiempo real">
+    <title>INFOOFICIAL - Noticias Oficiales 2026</title>
+    
+    <!-- Fuentes Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
+        /* ===== VARIABLES CSS ===== */
+        :root {
+            --color-bg-primary: #0a0a0a;
+            --color-bg-secondary: #1a1a1a;
+            --color-bg-card: #1f1f1f;
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #b0b0b0;
+            --color-gold: #d4af37;
+            --color-gold-light: #f4d03f;
+            --color-gold-dark: #b89628;
+            --color-error: #e74c3c;
+            --color-success: #27ae60;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+            --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.3);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+            --header-height: 80px;
+        }
+
+        /* ===== RESET Y BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Georgia', serif; background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%); min-height: 100vh; padding-bottom: 80px; }
         
-        header { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-bottom: 4px solid #d4af37; padding: 30px 20px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-        header h1 { color: #d4af37; font-size: 3em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); letter-spacing: 3px; }
-        header p { color: #fff; margin-top: 10px; font-size: 1.1em; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-top: var(--header-height);
+        }
 
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
 
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 30px; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        img { max-width: 100%; display: block; }
+        button { cursor: pointer; border: none; font-family: inherit; }
+        input, textarea { font-family: inherit; }
 
-        .news-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.15); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 2px solid #d4af37; }
-        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3); }
-        .news-card img { width: 100%; height: 250px; object-fit: cover; border-bottom: 3px solid #d4af37; }
-        .news-content { padding: 20px; }
-        .news-title { color: #1a1a1a; font-size: 1.5em; margin-bottom: 10px; font-weight: bold; }
-        .news-date { color: #d4af37; font-size: 0.9em; margin-bottom: 15px; font-style: italic; }
-        .news-description { color: #555; line-height: 1.6; font-size: 1em; }
+        /* ===== CABECERA FIJA ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: linear-gradient(135deg, var(--color-bg-secondary) 0%, #2a2a2a 100%);
+            border-bottom: 2px solid var(--color-gold);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
 
-        .no-news { text-align: center; color: #888; font-size: 1.2em; padding: 60px 20px; grid-column: 1 / -1; }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-        .settings-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); border-radius: 50%; border: none; cursor: pointer; box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .settings-btn:hover { transform: rotate(180deg) scale(1.1); box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6); }
-        .settings-btn svg { width: 35px; height: 35px; fill: #1a1a1a; }
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            color: var(--color-gold);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
 
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
-        .modal-overlay.active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .header-slogan {
+            font-size: 0.85em;
+            color: var(--color-text-secondary);
+            display: none;
+        }
 
-        .modal-content { background: white; padding: 40px; border-radius: 15px; max-width: 400px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3); border: 3px solid #d4af37; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .modal-content h2 { color: #1a1a1a; margin-bottom: 20px; text-align: center; font-size: 1.8em; }
-        .modal-content input[type="password"] { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 1em; margin-bottom: 20px; transition: border-color 0.3s ease; }
-        .modal-content input[type="password"]:focus { outline: none; border-color: #d4af37; }
+        @media (min-width: 768px) {
+            .header-slogan { display: block; }
+        }
 
-        .modal-buttons { display: flex; gap: 10px; }
-        .modal-buttons button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 1em; cursor: pointer; transition: all 0.3s ease; font-weight: bold; }
-        .btn-login { background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; }
-        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
-        .btn-cancel { background: #e0e0e0; color: #333; }
-        .btn-cancel:hover { background: #d0d0d0; }
+        /* ===== BUSCADOR ===== */
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+            position: relative;
+        }
 
-        .error-message { color: #e74c3c; text-align: center; margin-top: 15px; font-weight: bold; display: none; animation: shake 0.5s ease; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
-        .error-message.show { display: block; }
+        .search-input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            background: var(--color-bg-card);
+            border: 1px solid #333;
+            border-radius: 25px;
+            color: var(--color-text-primary);
+            font-size: 0.95em;
+            transition: var(--transition);
+        }
 
-        .admin-panel { display: none; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); border: 3px solid #d4af37; margin-bottom: 40px; }
-        .admin-panel.active { display: block; animation: slideUp 0.3s ease; }
-        .admin-panel h2 { color: #1a1a1a; margin-bottom: 20px; font-size: 2em; border-bottom: 3px solid #d4af37; padding-bottom: 10px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; color: #333; font-weight: bold; font-size: 1.1em; }
-        .form-group input[type="text"], .form-group textarea, .form-group input[type="file"] { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1em; font-family: 'Georgia', serif; transition: border-color 0.3s ease; }
-        .form-group input[type="text"]:focus, .form-group textarea:focus { outline: none; border-color: #d4af37; }
-        .form-group textarea { resize: vertical; min-height: 120px; }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--color-gold);
+            box-shadow: var(--shadow-gold);
+        }
 
-        .btn-publish { background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%); color: #1a1a1a; padding: 15px 40px; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; margin-right: 10px; }
-        .btn-publish:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4); }
-        .btn-logout { background: #e74c3c; color: white; padding: 15px 40px; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
-        .btn-logout:hover { background: #c0392b; transform: translateY(-2px); }
-        .btn-delete { background: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 0.9em; transition: all 0.3s ease; }
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ===== MENÚ DE NAVEGACIÓN ===== */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-link {
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--color-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+            background: transparent;
+        }
+
+        .nav-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--color-gold);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        /* ===== CONTENEDOR PRINCIPAL ===== */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        @media (min-width: 1024px) {
+            .main-container {
+                grid-template-columns: 2fr 1fr;
+                align-items: start;
+            }
+        }
+
+        /* ===== FEED DE NOTICIAS ===== */
+        .news-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--color-gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 600px) {
+            .news-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (min-width: 1024px) {
+            .news-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ===== TARJETA DE NOTICIA ===== */
+        .news-card {
+            background: var(--color-bg-card);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 1px solid #333;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg), var(--shadow-gold);
+            border-color: var(--color-gold);
+        }
+
+        .news-card-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .news-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .news-card:hover .news-card-image img {
+            transform: scale(1.05);
+        }
+
+        .news-card-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--color-gold);
+            color: var(--color-bg-primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .news-card-content {
+            padding: 20px;
+        }
+
+        .news-card-category {
+            color: var(--color-gold);
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .news-card-title {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: var(--color-text-primary);
+        }
+
+        .news-card-title:hover {
+            color: var(--color-gold);
+        }
+
+        .news-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.85em;
+            color: var(--color-text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .news-card-description {
+            color: var(--color-text-secondary);
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+        }
+
+        .like-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            color: var(--color-text-secondary);
+            font-size: 0.9em;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+
+        .like-btn:hover,
+        .like-btn.liked {
+            color: var(--color-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .like-btn.liked svg {
+            fill: var(--color-gold);
+        }
+
+        .read-more {
+            color: var(--color-gold);
+            font-weight: 500;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .read-more:hover {
+            gap: 8px;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .sidebar-widget {
+            background: var(--color-bg-card);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid #333;
+        }
+
+        .sidebar-widget h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--color-gold);
+            color: var(--color-gold);
+        }
+
+        /* ===== TRENDING ARTICLES ===== */
+        .trending-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .trending-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .trending-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .trending-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--color-gold);
+            min-width: 30px;
+        }
+
+        .trending-info h4 {
+            font-size: 0.95em;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .trending-info span {
+            font-size: 0.8em;
+            color: var(--color-text-secondary);
+        }
+
+        /* ===== NEWSLETTER ===== */
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .newsletter-form p {
+            font-size: 0.9em;
+            color: var(--color-text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .newsletter-input {
+            padding: 12px 15px;
+            background: var(--color-bg-primary);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: var(--color-text-primary);
+            font-size: 0.95em;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--color-gold);
+        }
+
+        .newsletter-btn {
+            background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+            color: var(--color-bg-primary);
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .newsletter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        /* ===== PANEL DE ADMINISTRADOR ===== */
+        .admin-panel {
+            display: none;
+            background: var(--color-bg-card);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--color-gold);
+            margin-bottom: 30px;
+        }
+
+        .admin-panel.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .admin-panel h2 {
+            color: var(--color-gold);
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: var(--color-bg-primary);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: var(--color-text-primary);
+            font-size: 0.95em;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--color-gold);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 100px; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+            color: var(--color-bg-primary);
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-right: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .btn-secondary {
+            background: #333;
+            color: var(--color-text-primary);
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover { background: #444; }
+
+        .btn-delete {
+            background: var(--color-error);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+
         .btn-delete:hover { background: #c0392b; }
 
-        footer { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: #d4af37; text-align: center; padding: 20px; margin-top: 60px; border-top: 4px solid #d4af37; }
+        /* ===== BOTÓN DE CONFIGURACIÓN ===== */
+        .settings-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-gold);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .settings-btn:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
+        }
+
+        .settings-btn svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--color-bg-primary);
+        }
+
+        /* ===== MODAL DE LOGIN ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--color-bg-card);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            max-width: 420px;
+            width: 100%;
+            border: 3px solid var(--color-gold);
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-content h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--color-gold);
+            font-size: 1.5em;
+        }
+
+        .modal-content input[type="password"] {
+            width: 100%;
+            padding: 14px;
+            background: var(--color-bg-primary);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: var(--color-text-primary);
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+
+        .modal-content input[type="password"]:focus {
+            outline: none;
+            border-color: var(--color-gold);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-modal-login {
+            background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+            color: var(--color-bg-primary);
+        }
+
+        .btn-modal-cancel {
+            background: #333;
+            color: var(--color-text-primary);
+        }
+
+        .error-message {
+            color: var(--color-error);
+            text-align: center;
+            margin-top: 12px;
+            font-weight: 500;
+            display: none;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        .error-message.show { display: block; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: linear-gradient(135deg, var(--color-bg-secondary) 0%, #0a0a0a 100%);
+            border-top: 3px solid var(--color-gold);
+            padding: 40px 20px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h4 {
+            color: var(--color-gold);
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .footer-section a {
+            display: block;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .footer-section a:hover {
+            color: var(--color-gold);
+            transform: translateX(3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: var(--color-text-secondary);
+            font-size: 0.9em;
+        }
+
+        /* ===== UTILIDADES ===== */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--color-text-secondary);
+            grid-column: 1 / -1;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--color-text-secondary);
+            font-style: italic;
+        }
+
+        .hidden { display: none !important; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header { padding: 0 15px; }
+            .search-container { order: 3; margin: 10px 0 0; max-width: 100%; }
+            .nav-menu {
+                position: fixed;
+                top: var(--header-height);
+                left: 0;
+                right: 0;
+                background: var(--color-bg-secondary);
+                flex-direction: column;
+                padding: 20px;
+                gap: 10px;
+                border-bottom: 2px solid var(--color-gold);
+                transform: translateY(-150%);
+                transition: transform 0.3s ease;
+                z-index: 999;
+            }
+            .nav-menu.active { transform: translateY(0); }
+            .nav-toggle { display: flex; }
+            .nav-link { padding: 12px; text-align: center; }
+            .main-container { padding: 20px 15px; }
+            .news-card-title { font-size: 1.2em; }
+        }
+
+        @media (max-width: 480px) {
+            .header-logo { font-size: 1.5em; }
+            .news-grid { grid-template-columns: 1fr; }
+            .modal-buttons { flex-direction: column; }
+            .btn-primary, .btn-secondary { width: 100%; margin: 5px 0; }
+        }
+
+        /* ===== ANIMACIONES ===== */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .pulse { animation: pulse 1.5s infinite; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>INFOOFICIAL</h1>
-    <p>Tu fuente de información confiable y actualizada</p>
-</header>
+    <!-- ===== CABECERA ===== -->
+    <header class="header">
+        <div class="header-brand">
+            <div class="header-logo">INFOOFICIAL</div>
+            <span class="header-slogan">Noticias en tiempo real</span>
+        </div>
 
-<div class="container">
-    <div id="adminPanel" class="admin-panel">
-        <h2>📰 Panel de Publicación</h2>
-        <div class="form-group">
-            <label for="newsTitle">Título de la Noticia:</label>
-            <input type="text" id="newsTitle" placeholder="Escribe el título aquí...">
+        <!-- Buscador -->
+        <div class="search-container">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input type="text" class="search-input" id="searchInput" placeholder="Buscar noticias...">
         </div>
-        <div class="form-group">
-            <label for="newsDescription">Descripción:</label>
-            <textarea id="newsDescription" placeholder="Escribe el contenido de la noticia..."></textarea>
+
+        <!-- Menú de Navegación -->
+        <nav class="nav-menu" id="navMenu">
+            <a href="#" class="nav-link active" data-category="all">Inicio</a>
+            <a href="#" class="nav-link" data-category="noticias">Noticias</a>
+            <a href="#" class="nav-link" data-category="educacion">Educación</a>
+            <a href="#" class="nav-link" data-category="sociedad">Sociedad</a>
+            <a href="#" class="nav-link" data-category="contacto">Contacto</a>
+        </nav>
+
+        <!-- Botón Hamburguesa -->
+        <button class="nav-toggle" id="navToggle" aria-label="Menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <main class="main-container">
+        
+        <!-- Sección de Noticias -->
+        <section class="news-section">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" stroke-width="2">
+                    <path d="M4 4h16v16H4z"/>
+                    <path d="M4 12h16M12 4v16"/>
+                </svg>
+                Últimas Noticias
+            </h2>
+            
+            <div id="newsFeed" class="news-grid">
+                <div class="loading pulse">Cargando noticias oficiales...</div>
+            </div>
+            
+            <div id="noResults" class="no-results hidden">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-secondary)" stroke-width="1.5" style="margin: 0 auto 15px;">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                </svg>
+                <p>No se encontraron noticias con esa búsqueda.</p>
+                <button class="btn-secondary" onclick="clearSearch()" style="margin-top: 15px;">Ver todas las noticias</button>
+            </div>
+        </section>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            
+            <!-- Panel de Administrador -->
+            <div id="adminPanel" class="admin-panel">
+                <h2>📰 Panel de Publicación</h2>
+                <div class="form-group">
+                    <label for="newsTitle">Título de la Noticia</label>
+                    <input type="text" id="newsTitle" placeholder="Escribe el título...">
+                </div>
+                <div class="form-group">
+                    <label for="newsCategory">Categoría</label>
+                    <select id="newsCategory">
+                        <option value="noticias">Noticias</option>
+                        <option value="educacion">Educación</option>
+                        <option value="sociedad">Sociedad</option>
+                        <option value="tecnologia">Tecnología</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="newsDescription">Descripción</label>
+                    <textarea id="newsDescription" placeholder="Escribe el contenido..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="newsImage">Imagen (opcional)</label>
+                    <input type="file" id="newsImage" accept="image/*">
+                </div>
+                <button class="btn-primary" onclick="publishNews()">📤 Publicar Noticia</button>
+                <button class="btn-secondary" onclick="logout()">🚪 Cerrar Sesión</button>
+            </div>
+
+            <!-- Lo Más Leído -->
+            <div class="sidebar-widget">
+                <h3>🔥 Lo Más Leído</h3>
+                <div class="trending-list" id="trendingList">
+                    <div class="loading" style="padding: 10px 0; font-size: 0.9em;">Cargando...</div>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="sidebar-widget">
+                <h3>📧 Suscríbete</h3>
+                <form class="newsletter-form" id="newsletterForm">
+                    <p>Recibe las noticias más importantes directamente en tu correo.</p>
+                    <input type="email" class="newsletter-input" placeholder="tu@email.com" required>
+                    <button type="submit" class="newsletter-btn">Suscribirme</button>
+                </form>
+            </div>
+
+        </aside>
+    </main>
+
+    <!-- ===== BOTÓN DE CONFIGURACIÓN ===== -->
+    <button class="settings-btn" id="settingsBtn" title="Acceso Administrador" aria-label="Acceso administrador">
+        <svg viewBox="0 0 24 24">
+            <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+        </svg>
+    </button>
+
+    <!-- ===== MODAL DE LOGIN ===== -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <h3>🔐 Acceso Restringido</h3>
+            <input type="password" id="adminPassword" placeholder="Contraseña de administrador" onkeypress="if(event.key==='Enter') checkPassword()">
+            <div class="modal-buttons">
+                <button class="btn-modal-login" onclick="checkPassword()">Ingresar</button>
+                <button class="btn-modal-cancel" onclick="closeLoginModal()">Cancelar</button>
+            </div>
+            <p class="error-message" id="errorMessage">❌ Contraseña incorrecta</p>
         </div>
-        <div class="form-group">
-            <label for="newsImage">Seleccionar Foto:</label>
-            <input type="file" id="newsImage" accept="image/*">
-        </div>
-        <button class="btn-publish" onclick="publishNews()">📤 Publicar Noticia</button>
-        <button class="btn-logout" onclick="logout()">🚪 Cerrar Sesión</button>
     </div>
 
-    <div id="newsFeed" class="news-grid">
-        <div class="no-news">Cargando noticias oficiales...</div>
-    </div>
-</div>
-
-<button class="settings-btn" onclick="showLoginModal()" title="Acceso Administrador">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
-    </svg>
-</button>
-
-<div id="loginModal" class="modal-overlay">
-    <div class="modal-content">
-        <h2>🔐 Acceso Restringido</h2>
-        <input type="password" id="adminPassword" placeholder="Ingrese la contraseña..." onkeypress="if(event.key === 'Enter') checkPassword()">
-        <div class="modal-buttons">
-            <button class="btn-login" onclick="checkPassword()">Ingresar</button>
-            <button class="btn-cancel" onclick="closeLoginModal()">Cancelar</button>
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>INFOOFICIAL</h4>
+                <a href="#">Sobre Nosotros</a>
+                <a href="#">Política de Privacidad</a>
+                <a href="#">Términos de Uso</a>
+            </div>
+            <div class="footer-section">
+                <h4>Categorías</h4>
+                <a href="#" data-category="noticias">Noticias</a>
+                <a href="#" data-category="educacion">Educación</a>
+                <a href="#" data-category="sociedad">Sociedad</a>
+                <a href="#" data-category="tecnologia">Tecnología</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <a href="mailto:contacto@infooficial.com">contacto@infooficial.com</a>
+                <a href="#">Redes Sociales</a>
+                <a href="#">Soporte</a>
+            </div>
         </div>
-        <div id="errorMessage" class="error-message">❌ Contraseña incorrecta o inválida</div>
-    </div>
-</div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 INFOOFICIAL - Todos los derechos reservados</p>
+        </div>
+    </footer>
 
-<footer>
-    <p>&copy; 2026 InfoOficial - Todos los derechos reservados</p>
-</footer>
+    <!-- ===== SCRIPT PRINCIPAL ===== -->
+    <script type="module">
+        // 🔗 Importar Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-<!-- SCRIPT DE FIREBASE CONFIGURADO -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        // ⚙️ Configuración de Firebase (INFOOFICIAL)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdOGCcK6RO_0dYbwg7lywOgnEuhrn7MRE",
+            authDomain: "infooficial-2026.firebaseapp.com",
+            databaseURL: "https://infooficial-2026-default-rtdb.firebaseio.com",
+            projectId: "infooficial-2026",
+            storageBucket: "infooficial-2026.firebasestorage.app",
+            messagingSenderId: "181245999814",
+            appId: "1:181245999814:web:4df33c217285a971ad75c7",
+            measurementId: "G-EMPO0DQTPR"
+        };
 
-    // ✅ CONFIGURACIÓN DE FIREBASE (Ya integrada)
-    const firebaseConfig = {
-        apiKey: "AIzaSyBdOGCcK6RO_0dYbwg7lywOgnEuhrn7MRE",
-        authDomain: "infooficial-2026.firebaseapp.com",
-        databaseURL: "https://infooficial-2026-default-rtdb.firebaseio.com",
-        projectId: "infooficial-2026",
-        storageBucket: "infooficial-2026.firebasestorage.app",
-        messagingSenderId: "181245999814",
-        appId: "1:181245999814:web:4df33c217285a971ad75c7",
-        measurementId: "G-EMPO0DQTPR"
-    };
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    
-    const ADMIN_PASSWORD = "AdminCodix2026*";
-    let isAdmin = false;
+        // 🔐 Configuración
+        const ADMIN_PASSWORD = "AdminCodix2026*";
+        let isAdmin = false;
+        let allNews = []; // Cache de noticias para búsqueda
 
-    window.showLoginModal = function() {
-        document.getElementById('loginModal').classList.add('active');
-        document.getElementById('adminPassword').value = '';
-        document.getElementById('errorMessage').classList.remove('show');
-        setTimeout(() => document.getElementById('adminPassword').focus(), 100);
-    };
+        // ===== FUNCIONES DE UI =====
+        
+        // Toggle menú móvil
+        document.getElementById('navToggle').addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
 
-    window.closeLoginModal = function() {
-        document.getElementById('loginModal').classList.remove('active');
-        document.getElementById('adminPassword').value = '';
-        document.getElementById('errorMessage').classList.remove('show');
-    };
+        // Cerrar menú al hacer clic en un enlace (móvil)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('navMenu').classList.remove('active');
+                }
+                // Filtrar por categoría
+                e.preventDefault();
+                const category = link.dataset.category;
+                filterByCategory(category);
+                // Actualizar estado activo
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
 
-    window.checkPassword = function() {
-        const inputPassword = document.getElementById('adminPassword').value;
-        if (inputPassword === ADMIN_PASSWORD) {
-            isAdmin = true;
-            closeLoginModal();
-            document.getElementById('adminPanel').classList.add('active');
-            alert('✅ Bienvenido, Administrador');
-        } else {
-            document.getElementById('errorMessage').classList.add('show');
+        // Modal de login
+        window.showLoginModal = () => {
+            document.getElementById('loginModal').classList.add('active');
             document.getElementById('adminPassword').value = '';
-            setTimeout(() => {
-                document.getElementById('errorMessage').classList.remove('show');
-            }, 3000);
+            document.getElementById('errorMessage').classList.remove('show');
+            setTimeout(() => document.getElementById('adminPassword').focus(), 100);
+        };
+
+        window.closeLoginModal = () => {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('errorMessage').classList.remove('show');
+        };
+
+        // Verificar contraseña
+        window.checkPassword = () => {
+            const input = document.getElementById('adminPassword').value;
+            if (input === ADMIN_PASSWORD) {
+                isAdmin = true;
+                closeLoginModal();
+                document.getElementById('adminPanel').classList.add('active');
+                renderNews(); // Re-renderizar para mostrar botones de eliminar
+                showToast('✅ Bienvenido, Administrador', 'success');
+            } else {
+                document.getElementById('errorMessage').classList.add('show');
+                document.getElementById('adminPassword').value = '';
+                setTimeout(() => document.getElementById('errorMessage').classList.remove('show'), 3000);
+            }
+        };
+
+        // Cerrar sesión
+        window.logout = () => {
+            isAdmin = false;
+            document.getElementById('adminPanel').classList.remove('active');
+            renderNews();
+            showToast('🚪 Sesión cerrada', 'info');
+        };
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            // Crear toast simple
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 90px;
+                right: 25px;
+                background: ${type === 'success' ? 'var(--color-success)' : type === 'error' ? 'var(--color-error)' : 'var(--color-gold)'};
+                color: ${type === 'info' ? 'var(--color-bg-primary)' : 'white'};
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-weight: 500;
+                box-shadow: var(--shadow-md);
+                z-index: 3000;
+                animation: slideUp 0.3s ease;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
         }
-    };
 
-    window.logout = function() {
-        isAdmin = false;
-        document.getElementById('adminPanel').classList.remove('active');
-    };
+        // ===== FUNCIONES DE NOTICIAS =====
 
-    window.publishNews = function() {
-        const title = document.getElementById('newsTitle').value.trim();
-        const description = document.getElementById('newsDescription').value.trim();
-        const imageInput = document.getElementById('newsImage');
+        // Publicar nueva noticia
+        window.publishNews = async () => {
+            const title = document.getElementById('newsTitle').value.trim();
+            const description = document.getElementById('newsDescription').value.trim();
+            const category = document.getElementById('newsCategory').value;
+            const imageInput = document.getElementById('newsImage');
 
-        if (!title || !description) {
-            alert('⚠️ Por favor complete el título y la descripción');
-            return;
-        }
+            if (!title || !description) {
+                showToast('⚠️ Completa título y descripción', 'error');
+                return;
+            }
 
-        const saveToFirebase = (imageData) => {
+            let imageData = null;
+            if (imageInput.files && imageInput.files[0]) {
+                const file = imageInput.files[0];
+                if (file.size > 1500000) {
+                    if (!confirm('⚠️ Imagen grande. ¿Subir de todos modos?')) return;
+                }
+                imageData = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            }
+
             const newsItem = {
-                title: title,
-                description: description,
+                title,
+                description,
+                category,
                 image: imageData,
-                date: new Date().toLocaleDateString('es-ES', { 
+                date: new Date().toLocaleDateString('es-ES', {
                     year: 'numeric', month: 'long', day: 'numeric',
                     hour: '2-digit', minute: '2-digit'
                 }),
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                likes: 0,
+                views: 0,
+                likedBy: []
             };
 
-            push(ref(db, 'noticias'), newsItem)
-                .then(() => {
-                    document.getElementById('newsTitle').value = '';
-                    document.getElementById('newsDescription').value = '';
-                    document.getElementById('newsImage').value = '';
-                    alert('✅ Noticia publicada en tiempo real para todos');
-                })
-                .catch((error) => {
-                    alert('❌ Error al publicar: ' + error.message);
-                });
+            try {
+                await push(ref(db, 'noticias'), newsItem);
+                // Limpiar formulario
+                document.getElementById('newsTitle').value = '';
+                document.getElementById('newsDescription').value = '';
+                document.getElementById('newsImage').value = '';
+                showToast('✅ Noticia publicada en tiempo real', 'success');
+            } catch (error) {
+                showToast('❌ Error: ' + error.message, 'error');
+            }
         };
 
-        if (imageInput.files && imageInput.files[0]) {
-            const file = imageInput.files[0];
-            if (file.size > 1500000) { 
-                if (!confirm('⚠️ La imagen es grande y podría llenar la base de datos gratuita. ¿Subir de todos modos?')) {
-                    return;
-                }
-            }
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                saveToFirebase(e.target.result);
-            };
-            reader.readAsDataURL(file);
-        } else {
-            saveToFirebase(null);
-        }
-    };
+        // Renderizar noticias
+        function renderNews(newsList = allNews) {
+            const feed = document.getElementById('newsFeed');
+            const noResults = document.getElementById('noResults');
 
-    const newsRef = ref(db, 'noticias');
-    onValue(newsRef, (snapshot) => {
-        const feed = document.getElementById('newsFeed');
-        feed.innerHTML = '';
-        const data = snapshot.val();
-
-        if (!data) {
-            feed.innerHTML = '<div class="no-news">📭 No hay noticias publicadas aún</div>';
-            return;
-        }
-
-        const newsList = Object.entries(data)
-            .map(([key, value]) => ({ id: key, ...value }))
-            .sort((a, b) => b.timestamp - a.timestamp);
-
-        newsList.forEach(news => {
-            const card = document.createElement('div');
-            card.className = 'news-card';
-            
-            let imageHtml = '';
-            if (news.image) {
-                imageHtml = `<img src="${news.image}" alt="${news.title}">`;
+            if (newsList.length === 0) {
+                feed.innerHTML = '';
+                noResults.classList.remove('hidden');
+                updateTrending([]);
+                return;
             }
 
-            let deleteBtn = '';
-            if (isAdmin) {
-                deleteBtn = `<button class="btn-delete" onclick="window.deleteNews('${news.id}')">🗑️ Eliminar</button>`;
-            }
+            noResults.classList.add('hidden');
+            feed.innerHTML = '';
 
-            card.innerHTML = `
-                ${imageHtml}
-                <div class="news-content">
-                    <h3 class="news-title">${news.title}</h3>
-                    <div class="news-date">📅 ${news.date}</div>
-                    <p class="news-description">${news.description}</p>
-                    ${deleteBtn}
-                </div>
-            `;
-            feed.appendChild(card);
-        });
-    });
+            newsList.forEach(news => {
+                const card = document.createElement('article');
+                card.className = 'news-card';
+                card.dataset.category = news.category;
+                card.dataset.id = news.id;
 
-    window.deleteNews = function(id) {
-        if (!confirm('¿Está seguro de eliminar esta noticia permanentemente?')) return;
-        remove(ref(db, `noticias/${id}`))
-            .then(() => {
-                alert('✅ Noticia eliminada');
-            })
-            .catch((error) => {
-                alert('❌ Error al eliminar: ' + error.message);
+                const isLiked = news.likedBy?.includes(getUserId());
+                const likeIcon = isLiked ? 
+                    '<svg width="18" height="18" viewBox="0 0 24 24" fill="var(--color-gold)" stroke="var(--color-gold)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' :
+                    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+
+                const deleteBtn = isAdmin ? 
+                    `<button class="btn-delete" onclick="deleteNews('${news.id}')">🗑️ Eliminar</button>` : '';
+
+                const categoryLabels = {
+                    'noticias': '📰 Noticias',
+                    'educacion': '🎓 Educación',
+                    'sociedad': '👥 Sociedad',
+                    'tecnologia': '💻 Tecnología'
+                };
+
+                card.innerHTML = `
+                    <div class="news-card-image">
+                        ${news.image ? `<img src="${news.image}" alt="${news.title}" loading="lazy">` : 
+                            `<div style="width:100%;height:100%;background:linear-gradient(135deg,#2a2a2a,#1a1a1a);display:flex;align-items:center;justify-content:center;color:var(--color-text-secondary);font-size:3em;">📰</div>`}
+                        <span class="news-card-badge">${categoryLabels[news.category] || news.category}</span>
+                    </div>
+                    <div class="news-card-content">
+                        <span class="news-card-category">${categoryLabels[news.category] || news.category}</span>
+                        <h3 class="news-card-title">
+                            <a href="#" onclick="viewNews('${news.id}')">${news.title}</a>
+                        </h3>
+                        <div class="news-card-meta">
+                            <span>📅 ${news.date}</span>
+                            <span>👁️ ${news.views || 0} vistas</span>
+                        </div>
+                        <p class="news-card-description">${news.description}</p>
+                        <div class="news-card-actions">
+                            <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${news.id}', ${news.likes || 0})">
+                                ${likeIcon}
+                                <span>${news.likes || 0}</span>
+                            </button>
+                            <a href="#" class="read-more" onclick="viewNews('${news.id}')">Leer más →</a>
+                        </div>
+                        ${deleteBtn}
+                    </div>
+                `;
+                feed.appendChild(card);
             });
-    };
 
-    document.getElementById('loginModal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeLoginModal();
+            // Actualizar trending
+            updateTrending(newsList);
         }
-    });
-</script>
 
+        // Toggle like
+        window.toggleLike = (newsId, currentLikes) => {
+            const userId = getUserId();
+            const news = allNews.find(n => n.id === newsId);
+            if (!news) return;
+
+            const likedBy = news.likedBy || [];
+            const isLiked = likedBy.includes(userId);
+            let newLikes = currentLikes;
+
+            if (isLiked) {
+                // Quitar like
+                newLikes = Math.max(0, currentLikes - 1);
+                const updatedLikedBy = likedBy.filter(id => id !== userId);
+                update(ref(db, `noticias/${newsId}`), { likes: newLikes, likedBy: updatedLikedBy });
+            } else {
+                // Agregar like
+                newLikes = currentLikes + 1;
+                update(ref(db, `noticias/${newsId}`), { 
+                    likes: newLikes, 
+                    likedBy: [...likedBy, userId] 
+                });
+            }
+
+            // Actualizar UI localmente
+            news.likes = newLikes;
+            if (!news.likedBy) news.likedBy = [];
+            news.likedBy = isLiked ? news.likedBy.filter(id => id !== userId) : [...news.likedBy, userId];
+            renderNews();
+        };
+
+        // Eliminar noticia
+        window.deleteNews = (id) => {
+            if (!confirm('¿Eliminar esta noticia permanentemente?')) return;
+            remove(ref(db, `noticias/${id}`))
+                .then(() => showToast('✅ Noticia eliminada', 'success'))
+                .catch(err => showToast('❌ Error: ' + err.message, 'error'));
+        };
+
+        // Ver noticia (simular vista)
+        window.viewNews = (id) => {
+            const news = allNews.find(n => n.id === id);
+            if (news) {
+                // Incrementar vistas
+                const newViews = (news.views || 0) + 1;
+                update(ref(db, `noticias/${id}`), { views: newViews });
+                news.views = newViews;
+                showToast(`📖 "${news.title}"`, 'info');
+            }
+        };
+
+        // ===== BUSCADOR Y FILTROS =====
+
+        // Búsqueda en tiempo real
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (query === '') {
+                renderNews(allNews);
+                return;
+            }
+            const filtered = allNews.filter(news => 
+                news.title.toLowerCase().includes(query) ||
+                news.description.toLowerCase().includes(query) ||
+                news.category.toLowerCase().includes(query)
+            );
+            renderNews(filtered);
+        });
+
+        // Limpiar búsqueda
+        window.clearSearch = () => {
+            document.getElementById('searchInput').value = '';
+            renderNews(allNews);
+        };
+
+        // Filtrar por categoría
+        function filterByCategory(category) {
+            if (category === 'all') {
+                renderNews(allNews);
+            } else {
+                const filtered = allNews.filter(news => news.category === category);
+                renderNews(filtered);
+            }
+        }
+
+        // ===== TRENDING =====
+
+        function updateTrending(newsList) {
+            const container = document.getElementById('trendingList');
+            if (!newsList || newsList.length === 0) {
+                container.innerHTML = '<p style="color:var(--color-text-secondary);font-size:0.9em;text-align:center;padding:10px;">Sin tendencias aún</p>';
+                return;
+            }
+
+            // Ordenar por likes + vistas
+            const trending = [...newsList]
+                .sort((a, b) => ((b.likes || 0) + (b.views || 0)) - ((a.likes || 0) + (a.views || 0)))
+                .slice(0, 5);
+
+            container.innerHTML = trending.map((news, index) => `
+                <div class="trending-item" onclick="viewNews('${news.id}')">
+                    <span class="trending-number">${index + 1}</span>
+                    <div class="trending-info">
+                        <h4>${news.title}</h4>
+                        <span>👁️ ${news.views || 0} • ❤️ ${news.likes || 0}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== NEWSLETTER =====
+
+        document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('input').value;
+            // Aquí iría la integración con tu servicio de email
+            showToast('✅ ¡Gracias por suscribirte!', 'success');
+            e.target.reset();
+        });
+
+        // ===== UTILIDADES =====
+
+        // ID único para likes (localStorage)
+        function getUserId() {
+            let userId = localStorage.getItem('infooficial_userId');
+            if (!userId) {
+                userId = 'user_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('infooficial_userId', userId);
+            }
+            return userId;
+        }
+
+        // ===== CARGAR NOTICIAS EN TIEMPO REAL =====
+
+        const newsRef = ref(db, 'noticias');
+        onValue(newsRef, (snapshot) => {
+            const data = snapshot.val();
+            
+            if (!data) {
+                allNews = [];
+                renderNews();
+                document.getElementById('newsFeed').innerHTML = 
+                    '<div class="no-news" style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--color-text-secondary);">📭 No hay noticias publicadas aún</div>';
+                return;
+            }
+
+            // Convertir a array y ordenar
+            allNews = Object.entries(data)
+                .map(([key, value]) => ({ id: key, ...value }))
+                .sort((a, b) => b.timestamp - a.timestamp);
+
+            renderNews(allNews);
+        });
+
+        // ===== EVENTOS GLOBALES =====
+
+        document.getElementById('settingsBtn').addEventListener('click', showLoginModal);
+        document.getElementById('loginModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('loginModal')) closeLoginModal();
+        });
+
+        // Cerrar menú móvil al hacer scroll
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 768) {
+                document.getElementById('navMenu').classList.remove('active');
+            }
+        });
+
+        // ===== INICIALIZACIÓN =====
+        document.addEventListener('DOMContentLoaded', () => {
+            // Pre-cargar userId
+            getUserId();
+            console.log('✅ INFOOFICIAL cargado - Modo: ' + (isAdmin ? 'ADMIN' : 'VISITANTE'));
+        });
+    </script>
 </body>
 </html>
